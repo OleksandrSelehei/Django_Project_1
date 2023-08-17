@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="../../static/main/css/main.css">
+      <title>ShopPrototype</title>
+  </head>
+  <body>
+      <div class="page">
+            <div class="header">
+                <a href="/"><span class="logo">Shop Prototype</span></a>
+                <nav>
+                  <a href="/catalog">Catalog</a>
+                  <a href="/contacts">Contacts</a>
+                  <a href="/about_us">About Us</a>
+                  <a href="/cart/basket"><img src="../../static/main/img/shopping_cart_icon.svg" alt="Shopping Cart"></a><!-- Значок корзины -->
+                  <a href="/users/profile"><img src="../../static/main/img/profile.svg" alt="Profile"></a> <!-- Значок профиля -->
+                </nav>
+              </div>
+              <form action="{% url 'filter' %}" method="get">
+                <div id="sidebar">
+                  <h3>Categories</h3>
+                  {% for category in view.get_category %}
+                  <label class="category-label">
+                    <input type="checkbox" class="checked" name="category" value="{{ category.id }}">
+                    <span class="checkmark"></span>
+                    <span class="category-title">{{ category.title }}</span>
+                  </label>
+                  {% endfor %}
+                  <button type="submit" class="search-button">Search</button>
+                </div>
+              </form>
+              <div class="contents">
+                {% for product in product_list %}
+                <div class="card">
+                  <img src="{{ product.photo.url }}" alt="{{ product.title }}">
+                  <h4 class="card-title">{{ product.title }}</h4>
+                  <p class="card-price">{{ product.price }}$</p>
+                  <a href="{{ product.get_absolute_url }}" class="card-button">Buy</a>
+                </div>
+                {% endfor %}
+              </div>
+      </div>
+  </body>
+</html>

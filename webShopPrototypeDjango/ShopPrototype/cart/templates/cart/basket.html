@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/cart/css/main.css">
+    <title>ShopPrototype</title>
+</head>
+<body>
+    <div class="header">
+      <a href="/"><span class="logo">Shop Prototype</span></a>
+      <nav>
+        <a href="/catalog">Catalog</a>
+        <a href="/contacts">Contacts</a>
+        <a href="/about_us">About Us</a>
+          <a href="/cart/basket"><img src="../../static/main/img/shopping_cart_icon.svg" alt="Shopping Cart"></a> <!-- Значок корзины -->
+        <a href="/users/profile"><img src="../../static/main/img/profile.svg" alt="Profile"></a> <!-- Значок профиля -->
+      </nav>
+    </div>
+
+    <div class="basket">
+        <h1 class="basket__title">
+            Your orders:
+        </h1>
+        <div class="basket__wrap">
+            {% for cart_item in cart_items %}
+            <div class="basket__card" data-product-id="{{ cart_item.product.id }}">
+                <img src="{{ cart_item.product.photo.url }}" alt="{{ cart_item.product.title }}" class="basket__photo">
+                <h4 class="basket__card-title">{{ cart_item.product.title }}</h4>
+                <p class="basket__card-price">{{ cart_item.product.price }}$</p>
+                <div class="basket-change">
+                    <button type="button" class="basket-change__btn basket-change__btn_minus">
+                        <img src="../../static/cart/img/minus.png" alt="" class="basket-change__minus">
+                    </button>
+                    <input type="text" value="{{ cart_item.quantity }}" class="basket-change__amount value-order">
+                    <button type="button" class="basket-change__btn basket-change__btn_plus">
+                        <img src="../../static/cart/img/plus.png" alt="" class="basket-change__plus">
+                    </button>
+                    <form method="post" action="{% url 'cart:delete' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ cart_item.product.id }}">
+                        <button type="submit" class="remove-from-cart-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="total_price">
+                <label>Total price: {{ total_price }}$</label>
+            </div>
+        </div>
+        <div class="button_order">
+            <button id="orderButton" onclick="placeOrder()">Order</button>
+        </div>
+    </div>
+
+    <script src="../../static/cart/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>
+</html>

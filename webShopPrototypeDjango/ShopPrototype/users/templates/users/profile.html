@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/users/css/main.css">
+    <title>ShopPrototype</title>
+</head>
+<body>
+    <div class="header">
+      <a href="/"><span class="logo">Shop Prototype</span></a>
+      <nav>
+        <a href="/catalog">Catalog</a>
+        <a href="/contacts">Contacts</a>
+        <a href="/about_us">About Us</a>
+        <a href="/cart/basket"><img src="../../static/main/img/shopping_cart_icon.svg" alt="Shopping Cart"></a> <!-- Значок корзины -->
+        <a href="/users/profile"><img src="../../static/main/img/profile.svg" alt="Profile"></a> <!-- Значок профиля -->
+          {% if is_admin %}
+        <a href="/admin">Admin Panel</a> <!-- Ссылка на админ-панель -->
+        {% endif %}
+        <a><button type="submit" class="exit" onclick="location.href='{% url 'logout' %}?next=/users/profile'">Exit</button></a>
+      </nav>
+    </div>
+
+    <div class="profile-wrap">
+        <div class="profile">
+            <div class="profile-container">
+                <div class="profile__nickname">
+                    <h2>Nickname:</h2>
+                    {{ user.username }}
+                </div>
+                <div class="profile__phone">
+                    <h2>Email:</h2>
+                    {{ user.email }}
+                </div>
+            </div>
+        </div>
+        <div class="history">
+            <h2>Order history:</h2>
+            <div class="history__wrap">
+                {% for order in orders %}
+                <div class="history__item" data-product-price="{{ order_item.product.price }}">
+                    {% for order_item in order.orderitem_set.all %}
+                    <img src="{{ order_item.product.photo.url }}" alt="{{ order_item.product.name }}">
+                    <h3 class="history__title">
+                        <h4>Name:</h4>
+                        {{ order_item.product.name }}
+                    </h3>
+                    <div class="history__amount">
+                        <h4>Amount:</h4>
+                        {{ order_item.quantity }}
+                    </div>
+                    <div class="history__total-price">
+                        <h4>Price:</h4>
+                        <span class="total-price"></span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/users/js/total_price.js"></script>
+</body>
+</html>
